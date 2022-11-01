@@ -1,0 +1,45 @@
+ls : there is a .pcap file
+Packet Capture : interception of data packets travelling over a network
+
+We can analyze a pcap file with wireshark
+We can download the file to have it locally:
+$> scp -P 4242 level02@192.168.56.101:/home/user/level02/level02.pcap ~/Desktop/Shared_Folder/.
+chmod 777 the pcap file
+
+Open wireshark on Kali, open the pcap file
+Analyze > Follow > TCP Stream
+we get Password: ft_wandr...NDRel.L0L
+this password is not working
+if we switch from ascii to HexDump, we get :
+000000B9  66                                                 f
+000000BA  74                                                 t
+000000BB  5f                                                 _
+000000BC  77                                                 w
+000000BD  61                                                 a
+000000BE  6e                                                 n
+000000BF  64                                                 d
+000000C0  72                                                 r
+000000C1  7f                                                 .
+000000C2  7f                                                 .
+000000C3  7f                                                 .
+000000C4  4e                                                 N
+000000C5  44                                                 D
+000000C6  52                                                 R
+000000C7  65                                                 e
+000000C8  6c                                                 l
+000000C9  7f                                                 .
+000000CA  4c                                                 L
+000000CB  30                                                 0
+000000CC  4c                                                 L
+
+The dot corresponds to 7f, which is equivalent to Delete in the Ascii talbe (127).
+If we press delete whenever we see a ., we have:
+ft_waNDReL0L
+
+su flag02
+password : ft_waNDReL0l
+
+$> getflag
+kooda2puivaav1idi4f57q8iq
+
+-> su level03

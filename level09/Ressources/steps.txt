@@ -1,0 +1,41 @@
+$> ls -la
+there is an executable level08 and a token file
+level09@SnowCrash:~$ cat token
+f4kmm6p|=�p�n��DB�Du{��
+level09@SnowCrash:~$ ./level09
+You need to provied only one arg.
+level09@SnowCrash:~$ ./level09 token
+tpmhr
+
+$> strings level09
+there is a line "You should not reverse it"
+
+Trying to run level09 with other arguments:
+level09@SnowCrash:~$ ./level09 test
+tfuw
+level09@SnowCrash:~$ ./level09 1
+1
+level09@SnowCrash:~$ ./level09 11
+12
+level09@SnowCrash:~$ ./level09 111
+123
+level09@SnowCrash:~$ ./level09 1111
+1234
+
+it seems like the executable is crypting the input by adding its index to each value.
+
+Download the token file locally, and chmod it
+$> scp -P 4242 level09@192.168.56.101:/home/user/level09/token ~/Desktop/Shared_Folder
+$> chmod 777 token
+
+decrypt.c file to decode the token
+$> gcc decrypt.c
+$> ./a.out `cat ~/Desktop/Shared_Folder/token`
+flag09 : f3iji1ju5yuevaus41q1afiuq
+
+-> $> su flag09
+$> getflag
+Check flag.Here is your token : s5cAJpM8ev6XHw998pRWG728z
+
+--> su level10
+

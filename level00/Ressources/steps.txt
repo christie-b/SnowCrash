@@ -1,0 +1,33 @@
+VM Setup:
+Virtualbox -> File > Host Network Manager > Create > Close
+Settings -> Network -> change NAT to Host-only adapter
+
+
+
+pwd
+whoami : level00
+cat /etc/passwd
+flag00:x:3000:3000::/home/flag/flag01:/bin/bash
+username:crypted pwd:User ID:Group ID::Home directory:command/shell
+
+find all the files owned by flag00 / UID 3000
+find / -uid 3000 2>/dev/null
+OR
+find / -user flag00
+
+we get a file named john
+cat /usr/sbin/john
+-> cdiiddwpgswtgt
+
+su flag00
+password is not working, it is crypted
+
+using dcode.fr -> it is using rot15
+password is "nottoohardhere"
+
+su flag00
+password is "nottoohardhere"
+getflag
+x24ti5gi3x0o12eh4esiuxias
+
+-> su level01 with the flag

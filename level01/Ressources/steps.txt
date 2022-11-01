@@ -1,0 +1,20 @@
+cat /etc/passwd
+-> flag01:42hDRfypTqqnw:3001:3001::/home/flag/flag01:/bin/bash
+
+trying 42hDRfypTqqnw as a password for su flag01
+-> Authentication failure
+
+trying to decode the password with dcode -> No results
+
+Trying to crack the password with John the Ripper
+In the Kali Linux VM, put the password to crack in a file level01.txt
+$> john --wordlist=/usr/share/john/password.lst level01.txt
+password is abcdefg
+
+su flag01
+password: abcdefg
+
+getflag
+->f2av5il02puano7naaf6adaaf
+
+su level02 with flag as password

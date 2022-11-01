@@ -1,0 +1,34 @@
+$> ls -la
+there is an executable "level08" and a token file with no read rights.
+
+level08@SnowCrash:~$ ./level08
+./level08 [file to read]
+level08@SnowCrash:~$ ./level08 token
+You may not access 'token'
+
+we don't have the rights to chmod the token file
+
+using ltrace, A library call tracer, to see all the syscalls executed
+$> ltrace ./level08 token
+strstr("token", "token")                                        = "token"
+printf("You may not access '%s'\n", "token"You may not access 'token'
+
+It is checking the file name, if it is equal to "token", we get the error msg.
+
+Let's try changing the file name:
+$> mv token file
+mv: cannot move `token' to `file': Permission denied
+
+let's try a chmod to the current directory to be able to do a mv
+$> chmod 777 .
+$> mv token file
+$> ./level08 file
+quif5eloekouj29ke0vouxean
+
+this is the password for flag08 user
+
+-> su flag08
+$> getflag
+Check flag.Here is your token : 25749xKZ8L7DkSCwJkT9dyv6f
+
+--> su level09

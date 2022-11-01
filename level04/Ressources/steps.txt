@@ -1,0 +1,27 @@
+$> ls
+There is a .pl file -> perl script file format.
+# : single line comment
+use CGI: CGI(Common Gateway Interface) is a protocol for executing scripts via web requests.
+
+qw : quote word -> extract each element of the given string (split equivalent)
+
+print "content-type: text/html\n\n"; : Ligne permettant au serveur et au browser d'interpr�ter correctement le reste du text. Cette ligne est essentielle. Si vous ne l'avez pas, vous obtiendrez une erreur 500.
+
+sub : subroutine -> section of code that is going to be reused, so that there is no need to rewrite the code.
+in the subroutine, $_[0] represents the first argument passed to the function.
+
+it will echo the 1st argument named x.
+
+
+In a URL, the question mark (“?”) divides the address of an object and the set of words used in the query.
+http://company/Products?location=FLO&category=wholesale
+The latter one with a question mark serves as a list of products filtered to display those from Florida (location=FLO) in the wholesale section (category=wholesale).
+
+In a navigator, if we go to: 192.168.56.101(VM IP):4747/?x=hello
+-> we get a hello back
+
+We can execute a command instead of a string with $(command)
+In a navigator : 192.168.56.101:4747/?x=$(getflag)
+we get : Check flag.Here is your token : ne2searoevaevoem4ov4ar8ap
+
+-> su level05
